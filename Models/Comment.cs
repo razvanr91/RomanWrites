@@ -42,5 +42,8 @@ namespace RomanWrites.Models
 
         public virtual IdentityUser Author { get; set; }
 
+        public virtual IdentityUser Moderator { get; set; }
+
+
     }
 }
