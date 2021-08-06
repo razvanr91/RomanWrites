@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using RomanWrites.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -37,6 +38,8 @@ namespace RomanWrites.Models
         [StringLength(250, ErrorMessage = "The {0} must be between {2} and {1} characters long", MinimumLength = 2)]
         [Display(Name = "Moderated")]
         public string ModeratedBody { get; set; }
+
+        public ModerationType ModerationType { get; set; }
 
         //Navigation Properties
         public virtual Post Post { get; set; }
