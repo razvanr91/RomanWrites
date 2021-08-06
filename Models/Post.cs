@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
+using RomanWrites.Enums;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -45,7 +46,7 @@ namespace RomanWrites.Models
 
         public string Slug { get; set; }
 
-        public bool IsReady { get; set; } = false;
+        public ProductionStatus ProductionStatus { get; set; }
 
         //Navigation Properties
         public virtual Blog Blog { get; set; }
