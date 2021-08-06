@@ -38,6 +38,7 @@ namespace RomanWrites.Models
         [Display(Name = "Moderated")]
         public string ModeratedBody { get; set; }
 
+        //Navigation Properties
         public virtual Post Post { get; set; }
 
         public virtual IdentityUser Author { get; set; }
