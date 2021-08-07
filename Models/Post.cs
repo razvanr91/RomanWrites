@@ -53,8 +53,8 @@ namespace RomanWrites.Models
 
         public virtual BlogUser Author { get; set; }
 
-        public virtual System.Collections.Generic.ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
+        public virtual ICollection<Tag> Tags { get; set; } = new HashSet<Tag>();
 
-        public virtual System.Collections.Generic.ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
+        public virtual ICollection<Comment> Comments { get; set; } = new HashSet<Comment>();
     }
 }
