@@ -23,6 +23,7 @@ namespace RomanWrites.Models
 
         public string ContentType { get; set; }
 
+        [NotMapped]
         public IFormFile Image { get; set; }
 
         public string LinkedIdUrl { get; set; }
