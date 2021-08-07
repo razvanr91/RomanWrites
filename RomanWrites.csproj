@@ -15,12 +15,16 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="5.0.8" />
     <PackageReference Include="Npgsql" Version="5.0.7" />
     <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="5.0.7" />
+    <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="5.0.2" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Sqlite" Version="5.0.8" />
   </ItemGroup>
 
   <ItemGroup>
     <None Remove="Enums\" />
     <None Remove="Npgsql" />
     <None Remove="Npgsql.EntityFrameworkCore.PostgreSQL" />
+    <None Remove="Microsoft.VisualStudio.Web.CodeGeneration.Design" />
+    <None Remove="Microsoft.EntityFrameworkCore.Sqlite" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Enums\" />

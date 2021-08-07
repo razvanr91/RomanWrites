@@ -10,8 +10,8 @@ using RomanWrites.Data;
 namespace RomanWrites.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    [Migration("20210807164049_Initial")]
-    partial class Initial
+    [Migration("20210807165643_001")]
+    partial class _001
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
