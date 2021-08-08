@@ -10,6 +10,7 @@ using Microsoft.Extensions.Hosting;
 using RomanWrites.Data;
 using RomanWrites.Models;
 using RomanWrites.Services;
+using RomanWrites.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -44,7 +45,11 @@ namespace RomanWrites
 
             services.AddRazorPages();
 
+            // Register Data Service Class
             services.AddScoped<DataService>();
+
+            // Configure Mail Settings class
+            services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
