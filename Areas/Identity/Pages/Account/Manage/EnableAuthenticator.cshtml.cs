@@ -10,6 +10,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.Extensions.Logging;
+using RomanWrites.Models;
 
 namespace RomanWrites.Areas.Identity.Pages.Account.Manage
 {
