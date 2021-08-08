@@ -14,7 +14,7 @@ namespace RomanWrites.Areas.Identity.Pages.Account.Manage
     {
         private readonly UserManager<BlogUser> _userManager;
         private readonly SignInManager<BlogUser> _signInManager;
-        ILogger<ResetAuthenticatorModel> _logger;
+        private readonly ILogger<ResetAuthenticatorModel> _logger;
 
         public ResetAuthenticatorModel(
             UserManager<BlogUser> userManager,
