@@ -2,6 +2,7 @@ using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using RomanWrites.Data;
 using RomanWrites.Enums;
 using RomanWrites.Models;
@@ -23,6 +24,9 @@ namespace RomanWrites.Services
 
         public async Task ManageDataAsync()
         {
+            // Create DB from the Migrations
+            await _context.Database.MigrateAsync();
+
             // Seed roles
             await SeedRolesAsync();
             
