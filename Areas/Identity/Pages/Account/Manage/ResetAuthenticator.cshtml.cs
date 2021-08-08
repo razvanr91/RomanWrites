@@ -12,7 +12,7 @@ namespace RomanWrites.Areas.Identity.Pages.Account.Manage
 {
     public class ResetAuthenticatorModel : PageModel
     {
-        UserManager<BlogUser> _userManager;
+        private readonly UserManager<BlogUser> _userManager;
         private readonly SignInManager<BlogUser> _signInManager;
         ILogger<ResetAuthenticatorModel> _logger;
 
