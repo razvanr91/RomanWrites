@@ -10,16 +10,18 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using RomanWrites.Models;
+using RomanWrites.Services;
 
 namespace RomanWrites.Areas.Identity.Pages.Account
 {
     [AllowAnonymous]
     public class ResendEmailConfirmationModel : PageModel
     {
-        private readonly UserManager<IdentityUser> _userManager;
-        private readonly IEmailSender _emailSender;
+        private readonly UserManager<BlogUser> _userManager;
+        private readonly IBlogEmailSender _emailSender;
 
-        public ResendEmailConfirmationModel(UserManager<IdentityUser> userManager, IEmailSender emailSender)
+        public ResendEmailConfirmationModel(UserManager<BlogUser> userManager, IBlogEmailSender emailSender)
         {
             _userManager = userManager;
             _emailSender = emailSender;
