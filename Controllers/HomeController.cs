@@ -41,7 +41,10 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact(ContactMe model)
         {
-            
+            model.Message = $"{model.Message} <hr/> Email Address : {model.Email}";
+            await _emailSender.SendContactEmailAsync(model.Email, model.Name, model.Subject, model.Message);
+
+            return RedirectToAction("Index");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
