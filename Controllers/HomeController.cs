@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using RomanWrites.Models;
+using RomanWrites.Services;
+using RomanWrites.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -11,11 +13,13 @@ namespace RomanWrites.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly IBlogEmailSender _emailSender;
         private readonly ILogger<HomeController> _logger;
 
-        public HomeController(ILogger<HomeController> logger)
+        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender)
         {
             _logger = logger;
+            _emailSender = emailSender;
         }
 
         public IActionResult Index()
@@ -37,7 +41,7 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Contact(ContactMe model)
         {
-
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
