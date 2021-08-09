@@ -7,16 +7,19 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using RomanWrites.Data;
 using RomanWrites.Models;
+using RomanWrites.Services;
 
 namespace RomanWrites.Controllers
 {
     public class PostsController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly ISlugService _slugService;
 
-        public PostsController(ApplicationDbContext context)
+        public PostsController(ApplicationDbContext context, ISlugService slugService)
         {
             _context = context;
+            _slugService = slugService;
         }
 
         // GET: Posts
@@ -59,7 +62,7 @@ namespace RomanWrites.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,BlogId,AuthorId,Title,Abstract,Content,Created,Updated,ImageData,ContentType,Slug,ProductionStatus")] Post post)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,Image,ProductionStatus")] Post post)
         {
             if (ModelState.IsValid)
             {
