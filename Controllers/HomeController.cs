@@ -42,9 +42,18 @@ namespace RomanWrites.Controllers
         public async Task<IActionResult> Contact(ContactMe model)
         {
             model.Message = $"{model.Message} <hr/> Email Address : {model.Email}";
-            await _emailSender.SendContactEmailAsync(model.Email, model.Name, model.Subject, model.Message);
+            try
+            {
+                await _emailSender.SendContactEmailAsync(model.Email, model.Name, model.Subject, model.Message);
+                return View("ContactSuccess");
+            }
+            catch
+            {
+                return View("ContactFailed");
+            }
+            
 
-            return View("ContactSuccess");
+            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
