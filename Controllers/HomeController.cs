@@ -44,7 +44,7 @@ namespace RomanWrites.Controllers
             model.Message = $"{model.Message} <hr/> Email Address : {model.Email}";
             await _emailSender.SendContactEmailAsync(model.Email, model.Name, model.Subject, model.Message);
 
-            return RedirectToAction("Index");
+            return View("ContactSuccess");
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
