@@ -52,6 +52,9 @@ namespace RomanWrites
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
             services.AddScoped<IBlogEmailSender, EmailService>();
+
+            // Register Image Service
+            services.AddScoped<IImageService, ImageService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
