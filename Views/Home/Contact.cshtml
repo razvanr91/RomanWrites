@@ -7,28 +7,28 @@
         <div class="my-5">
 
             <form asp-action="Contact">
-                <div class="form-floating">
+                <div class="form-floating py-2">
                     <input asp-for="Name" class="form-control" type="text" placeholder="Enter your name..." data-sb-validations="required" />
                     <label asp-for="Name"></label>
                     <div class="invalid-feedback" data-sb-feedback="name:required">A name is required.</div>
                 </div>
 
-                <div class="form-floating">
+                <div class="form-floating py-2">
                     <input asp-for="Email" class="form-control" type="email" placeholder="Enter your email..." data-sb-validations="required,email" />
                     <label asp-for="Email"></label>
                     <div class="invalid-feedback" data-sb-feedback="email:required">An email is required.</div>
                     <div class="invalid-feedback" data-sb-feedback="email:email">Email is not valid.</div>
                 </div>
 
-                <div class="form-floating">
+                <div class="form-floating py-2">
                     <input asp-for="Subject" type="text" class="form-control" placeholder="Enter your subject..." required data-validation-required-message="Please enter the subject of your message..." />
                     <label asp-for="Subject"></label>
                     <div class="invalid-feedback" data-sb-feedback="subject:required">A subject is required.</div>
                 </div>
 
-                <div class="form-floating">
+                <div class="form-group py-2">
+                    <label asp-for="Message" class="form-label"></label>
                     <textarea asp-for="Message" class="form-control" id="summernote" placeholder="Enter your message here..." style="height: 12rem" data-sb-validations="required"></textarea>
-                    <label asp-for="Message"></label>
                     <div class="invalid-feedback" data-sb-feedback="message:required">A message is required.</div>
                 </div>
 
@@ -57,12 +57,11 @@
     </div>
 </div>
 
-@section Script {
+@section Scripts {
     <script>
       $('#summernote').summernote({
-        placeholder: 'Hello stand alone ui',
         tabsize: 2,
-        height: 120,
+        height: 220,
         toolbar: [
           ['style', ['style']],
           ['font', ['bold', 'underline', 'clear']],
