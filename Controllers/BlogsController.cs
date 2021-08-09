@@ -36,7 +36,7 @@ namespace RomanWrites.Controllers
         // GET: Blogs/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
@@ -44,7 +44,7 @@ namespace RomanWrites.Controllers
             var blog = await _context.Blogs
                 .Include(b => b.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blog == null)
+            if ( blog == null )
             {
                 return NotFound();
             }
@@ -67,7 +67,7 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("Name,Description,Image")] Blog blog)
         {
-            if (ModelState.IsValid)
+            if ( ModelState.IsValid )
             {
                 blog.Created = DateTime.Now;
                 blog.AuthorId = _userManager.GetUserId(User);
@@ -84,13 +84,13 @@ namespace RomanWrites.Controllers
         // GET: Blogs/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
 
             var blog = await _context.Blogs.FindAsync(id);
-            if (blog == null)
+            if ( blog == null )
             {
                 return NotFound();
             }
@@ -105,21 +105,21 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,AuthorId,Name,Description,Created,Updated,ImageData,ContentType")] Blog blog)
         {
-            if (id != blog.Id)
+            if ( id != blog.Id )
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if ( ModelState.IsValid )
             {
                 try
                 {
                     _context.Update(blog);
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch ( DbUpdateConcurrencyException )
                 {
-                    if (!BlogExists(blog.Id))
+                    if ( !BlogExists(blog.Id) )
                     {
                         return NotFound();
                     }
@@ -137,7 +137,7 @@ namespace RomanWrites.Controllers
         // GET: Blogs/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
@@ -145,7 +145,7 @@ namespace RomanWrites.Controllers
             var blog = await _context.Blogs
                 .Include(b => b.Author)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (blog == null)
+            if ( blog == null )
             {
                 return NotFound();
             }
