@@ -55,6 +55,9 @@ namespace RomanWrites
 
             // Register Image Service
             services.AddScoped<IImageService, ImageService>();
+
+            // Register Slug Service
+            services.AddScoped<ISlugService, SlugService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
