@@ -51,9 +51,6 @@ namespace RomanWrites.Controllers
             {
                 return View("ContactFailed");
             }
-            
-
-            
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]
