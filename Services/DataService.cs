@@ -25,6 +25,7 @@ namespace RomanWrites.Services
         public async Task ManageDataAsync()
         {
             // Create DB from the Migrations
+            // the same as update-database
             await _context.Database.MigrateAsync();
 
             // Seed roles
