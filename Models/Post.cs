@@ -46,6 +46,7 @@ namespace RomanWrites.Models
 
         public string Slug { get; set; }
 
+        [Display(Name = "Production Status")]
         public ProductionStatus ProductionStatus { get; set; }
 
         //Navigation Properties
