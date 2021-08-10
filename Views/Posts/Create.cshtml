@@ -1,3 +1,4 @@
+@using RomanWrites.Enums
 @model RomanWrites.Models.Post
 
 @{
@@ -30,7 +31,7 @@
             </div>
             <div class="form-group my-2">
                 <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control"></textarea>
+                <textarea asp-for="Content" id="summernote" class="form-control"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
 
@@ -42,7 +43,8 @@
 
             <div class="form-group my-2">
                 <label asp-for="ProductionStatus" class="control-label"></label>
-                <select asp-for="ProductionStatus" class="form-control">
+                <select asp-for="ProductionStatus" asp-items="@Html.GetEnumSelectList<ProductionStatus>()" class="form-control">
+                    <option>Select an option</option>
                 </select>
                 <span asp-validation-for="ProductionStatus" class="text-danger"></span>
             </div>
