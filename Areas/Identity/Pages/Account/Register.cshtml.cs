@@ -88,7 +88,14 @@ namespace RomanWrites.Areas.Identity.Pages.Account
             ExternalLogins = ( await _signInManager.GetExternalAuthenticationSchemesAsync() ).ToList();
             if ( ModelState.IsValid )
             {
-                var user = new BlogUser { UserName = Input.Email, Email = Input.Email };
+                var user = new BlogUser 
+                { 
+                    UserName = Input.Email, 
+                    Email = Input.Email,
+                    FirstName = Input.FirstName,
+                    LastName = Input.LastName,
+                    DisplayName = Input.DisplayName
+                };
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if ( result.Succeeded )
                 {
