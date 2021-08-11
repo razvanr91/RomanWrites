@@ -1,17 +1,26 @@
-﻿@using RomanWrites.Models 
+﻿@using RomanWrites.Models
+@using RomanWrites.Services
 @using Microsoft.AspNetCore.Identity
+@inject IImageService ImageService
 @inject SignInManager<BlogUser> SignInManager
 @inject UserManager<BlogUser> UserManager
 
-<ul class="navbar-nav">
-    @if (SignInManager.IsSignedIn(User))
+@{
+    var user = UserManager.GetUserAsync(User).Result;
+    var userImage = ImageService.DecodeImage(user.ImageData, user.ContentType);
+}
+
+<ul class="navbar-nav w-25">
+    @if ( SignInManager.IsSignedIn(User) )
     {
-        <li class="nav-item">
-            <a class="nav-link " asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @UserManager.GetUserAsync(User).Result.FirstName!</a>
+        <li class="nav-item w-50">
+            <a class="nav-link d-flex justify-content-center" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
+                <img src="@userImage" alt="@user.FirstName profile picture" class="img-fluid w-25 rounded-circle" /> <span class="align-self-center ms-2">@user.FirstName</span>
+            </a>
         </li>
         <li class="nav-item">
             <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Home", new { area = "" })">
-                <button type="submit" class="nav-link btn btn-link text-white font-weight-bolder ">Logout</button>
+                <button type="submit" class="nav-link btn btn-link text-white font-weight-bolder">Logout</button>
             </form>
         </li>
     }
