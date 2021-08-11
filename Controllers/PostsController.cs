@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -115,7 +116,7 @@ namespace RomanWrites.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,ProductionStatus, Image")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,ProductionStatus")] Post post, IFormFile newImage)
         {
             if (id != post.Id)
             {
@@ -126,7 +127,28 @@ namespace RomanWrites.Controllers
             {
                 try
                 {
-                    _context.Update(post);
+                    var newPost = await _context.Posts.FindAsync(post.Id);
+
+                    newPost.Updated = DateTime.Now;
+
+                    if(newImage is not null)
+                    {
+                        newPost.ImageData = await _imageService.EncodeImageAsync(newImage);
+                        newPost.ContentType = _imageService.ContentType(newImage);
+                    }
+
+                    if ( post.Title != newPost.Title )
+                        newPost.Title = post.Title;
+
+                    if ( newPost.Abstract != post.Abstract )
+                        newPost.Abstract = post.Abstract;
+
+                    if ( newPost.Content != post.Content )
+                        newPost.Content = post.Content;
+
+                    if ( newPost.ProductionStatus != post.ProductionStatus )
+                        newPost.ProductionStatus = post.ProductionStatus;
+                    
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
