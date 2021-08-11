@@ -15,11 +15,13 @@ namespace RomanWrites.Controllers
     {
         private readonly ApplicationDbContext _context;
         private readonly ISlugService _slugService;
+        private readonly IImageService _imageService;
 
-        public PostsController(ApplicationDbContext context, ISlugService slugService)
+        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService)
         {
             _context = context;
             _slugService = slugService;
+            _imageService = imageService;
         }
 
         // GET: Posts
@@ -68,6 +70,9 @@ namespace RomanWrites.Controllers
             {
                 post.Created = DateTime.Now;
 
+                post.ImageData = await _imageService.EncodeImageAsync(post.Image);
+                post.ContentType = _imageService.ContentType(post.Image);
+
                 var slug = _slugService.UrlFriendly(post.Title);
                 if ( !_slugService.IsUnique(slug) )
                 {
@@ -110,7 +115,7 @@ namespace RomanWrites.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,BlogId,AuthorId,Title,Abstract,Content,Created,Updated,ImageData,ContentType,Slug,ProductionStatus")] Post post)
+        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,ProductionStatus, Image")] Post post)
         {
             if (id != post.Id)
             {
