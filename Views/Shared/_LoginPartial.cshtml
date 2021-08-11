@@ -5,14 +5,14 @@
 @inject SignInManager<BlogUser> SignInManager
 @inject UserManager<BlogUser> UserManager
 
-@{
-    var user = UserManager.GetUserAsync(User).Result;
-    var userImage = ImageService.DecodeImage(user.ImageData, user.ContentType);
-}
+
 
 <ul class="navbar-nav w-25">
     @if ( SignInManager.IsSignedIn(User) )
     {
+        var user = UserManager.GetUserAsync(User).Result;
+        var userImage = ImageService.DecodeImage(user.ImageData, user.ContentType);
+
         <li class="nav-item w-50">
             <a class="nav-link d-flex justify-content-center" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">
                 <img src="@userImage" alt="@user.FirstName profile picture" class="img-fluid w-25 rounded-circle" /> <span class="align-self-center ms-2">@user.FirstName</span>
