@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -103,7 +104,7 @@ namespace RomanWrites.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,AuthorId,Name,Description,Created,Updated,ImageData,ContentType")] Blog blog)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Name,Description")] Blog blog, IFormFile newImage)
         {
             if ( id != blog.Id )
             {
@@ -114,7 +115,22 @@ namespace RomanWrites.Controllers
             {
                 try
                 {
-                    _context.Update(blog);
+                    var editedBlog = await _context.Blogs.FindAsync(blog.Id);
+
+                    editedBlog.Updated = DateTime.Now;
+
+                    if(editedBlog.Name != blog.Name)
+                        editedBlog.Name = blog.Name;
+
+                    if ( editedBlog.Description != blog.Description )
+                        editedBlog.Description = blog.Description;
+
+                    if(newImage is not null)
+                    {
+                        editedBlog.ImageData = await _imageService.EncodeImageAsync(newImage);
+                        editedBlog.ContentType = _imageService.ContentType(newImage);
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch ( DbUpdateConcurrencyException )
