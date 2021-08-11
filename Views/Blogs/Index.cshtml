@@ -41,7 +41,7 @@
                     @Html.DisplayFor(modelItem => blog.Name)
                 </td>
                 <td>
-                    @Html.DisplayFor(modelItem => blog.Description)
+                    @Html.Raw(blog.Description);
                 </td>
                 <td>
                     @Html.DisplayFor(modelItem => blog.Created)
