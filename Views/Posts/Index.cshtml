@@ -1,3 +1,5 @@
+@using RomanWrites.Services
+@inject IImageService ImageService
 @model IEnumerable<RomanWrites.Models.Post>
 
 @{
@@ -28,13 +30,7 @@
                 @Html.DisplayNameFor(model => model.Updated)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ImageData)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ContentType)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Slug)
+                @Html.DisplayNameFor(model => model.Image)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.ProductionStatus)
@@ -58,7 +54,8 @@
                 @Html.DisplayFor(modelItem => item.Abstract)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Content)
+                @*@Html.DisplayFor(modelItem => item.Content)*@
+                @Html.Raw(item.Content)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Created)
@@ -67,13 +64,7 @@
                 @Html.DisplayFor(modelItem => item.Updated)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ImageData)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ContentType)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Slug)
+                <img src="@ImageService.DecodeImage(item.ImageData, item.ContentType)" alt="@item.Title image" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductionStatus)
@@ -82,7 +73,7 @@
                 @Html.DisplayFor(modelItem => item.Blog.Description)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Author.Id)
+                @Html.DisplayFor(modelItem => item.Author.FirstName)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
