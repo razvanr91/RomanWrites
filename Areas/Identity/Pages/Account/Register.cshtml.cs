@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Text.Encodings.Web;
@@ -106,7 +107,8 @@ namespace RomanWrites.Areas.Identity.Pages.Account
                     LastName = Input.LastName,
                     DisplayName = Input.DisplayName,
                     ImageData = ( await _imageService.EncodeImageAsync(Input.UserImage) ) ??
-                                ( await _imageService.EncodeImageAsync(_configuration["DefaultUserImage"]) )
+                                ( await _imageService.EncodeImageAsync(_configuration["DefaultUserImage"]) ),
+                    ContentType = Input.UserImage is null ? Path.GetExtension(_configuration["DefaultUserImage"]) : _imageService.ContentType(Input.UserImage)
                 };
 
                 var result = await _userManager.CreateAsync(user, Input.Password);
