@@ -13,6 +13,7 @@ using Microsoft.AspNetCore.Identity.UI.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.WebUtilities;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 using RomanWrites.Models;
 using RomanWrites.Services;
@@ -26,17 +27,21 @@ namespace RomanWrites.Areas.Identity.Pages.Account
         private readonly UserManager<BlogUser> _userManager;
         private readonly ILogger<RegisterModel> _logger;
         private readonly IBlogEmailSender _emailSender;
+        private readonly IImageService _imageService;
+        private readonly IConfiguration _configuration;
 
         public RegisterModel(
             UserManager<BlogUser> userManager,
             SignInManager<BlogUser> signInManager,
             ILogger<RegisterModel> logger,
-            IBlogEmailSender emailSender)
+            IBlogEmailSender emailSender, IImageService imageService, IConfiguration configuration)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _logger = logger;
             _emailSender = emailSender;
+            _imageService = imageService;
+            _configuration = configuration;
         }
 
         [BindProperty]
@@ -93,14 +98,17 @@ namespace RomanWrites.Areas.Identity.Pages.Account
             ExternalLogins = ( await _signInManager.GetExternalAuthenticationSchemesAsync() ).ToList();
             if ( ModelState.IsValid )
             {
-                var user = new BlogUser 
-                { 
-                    UserName = Input.Email, 
+                var user = new BlogUser
+                {
+                    UserName = Input.Email,
                     Email = Input.Email,
                     FirstName = Input.FirstName,
                     LastName = Input.LastName,
-                    DisplayName = Input.DisplayName
+                    DisplayName = Input.DisplayName,
+                    ImageData = ( await _imageService.EncodeImageAsync(Input.UserImage) ) ??
+                                ( await _imageService.EncodeImageAsync(_configuration["DefaultUserImage"]) )
                 };
+
                 var result = await _userManager.CreateAsync(user, Input.Password);
                 if ( result.Succeeded )
                 {
