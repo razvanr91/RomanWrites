@@ -31,7 +31,7 @@ namespace RomanWrites.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Author).Include(p => p.Blog);
+            var applicationDbContext = _context.Posts.Include(p => p.Author).Include(p => p.Blog).Include(p => p.Tags);
             return View(await applicationDbContext.ToListAsync());
         }
 
@@ -47,7 +47,8 @@ namespace RomanWrites.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.Blog)
                 .Include(p => p.Tags)
-                .FirstOrDefaultAsync(m => m.Slug == slug);
+                .FirstOrDefaultAsync(p => p.Slug == slug);
+
             if ( post == null )
             {
                 return NotFound();
@@ -69,7 +70,7 @@ namespace RomanWrites.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,Image,ProductionStatus")] Post post, List<string> tagValues)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,Image,ProductionStatus,Slug")] Post post, List<string> tagValues)
         {
             if ( ModelState.IsValid )
             {
