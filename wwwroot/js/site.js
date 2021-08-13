@@ -1,12 +1,13 @@
-﻿let index = 0;
-let tagValues = document.getElementById("TagValues");
+﻿let tagList = document.getElementById("TagValues");
+let index = tagList.length;
+
 
 function AddTag() {
     var tagEntry = document.getElementById("TagEntry");
 
     let newOption = new Option(tagEntry.value, tagEntry.value);
 
-    tagValues.options[index++] = newOption;
+    tagList.options[index++] = newOption;
 
     tagEntry.value = "";
 
@@ -17,9 +18,9 @@ function DeleteTag() {
     let tagCount = 1;
 
     while (tagCount > 0) {
-        let selectedIndex = tagValues.selectedIndex;
+        let selectedIndex = tagList.selectedIndex;
         if (selectedIndex >= 0) {
-            tagValues.options[selectedIndex] = null;
+            tagList.options[selectedIndex] = null;
             --tagCount;
         } else {
             tagCount = 0;
@@ -28,6 +29,8 @@ function DeleteTag() {
         index--;
     }
 }
+
+
 
 $("form").on("submit", function () {
     $("#TagValues option").prop("selected", "selected");

@@ -36,9 +36,9 @@ namespace RomanWrites.Controllers
         }
 
         // GET: Posts/Details/5
-        public async Task<IActionResult> Details(string slug)
+        public async Task<IActionResult> Details(int? id)
         {
-            if (  string.IsNullOrEmpty(slug) )
+            if ( id is null )
             {
                 return NotFound();
             }
@@ -47,7 +47,7 @@ namespace RomanWrites.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.Blog)
                 .Include(p => p.Tags)
-                .FirstOrDefaultAsync(p => p.Slug == slug);
+                .FirstOrDefaultAsync(p => p.Id == id);
 
             if ( post == null )
             {
@@ -70,7 +70,7 @@ namespace RomanWrites.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,Image,ProductionStatus,Slug")] Post post, List<string> tagValues)
+        public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,Image,ProductionStatus")] Post post, List<string> tagValues)
         {
             if ( ModelState.IsValid )
             {
@@ -116,14 +116,14 @@ namespace RomanWrites.Controllers
         }
 
         // GET: Posts/Edit/5
-        public async Task<IActionResult> Edit(string slug)
+        public async Task<IActionResult> Edit(int? id)
         {
-            if ( string.IsNullOrEmpty(slug) )
+            if ( id is null )
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Slug == slug);
+            var post = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == id);
 
             if ( post == null )
             {
@@ -142,7 +142,7 @@ namespace RomanWrites.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,ProductionStatus")] Post post, IFormFile newImage)
+        public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,ProductionStatus")] Post post, IFormFile newImage, List<string> tagValues)
         {
             if ( id != post.Id )
             {
@@ -153,7 +153,7 @@ namespace RomanWrites.Controllers
             {
                 try
                 {
-                    var newPost = await _context.Posts.FindAsync(post.Id);
+                    var newPost = await _context.Posts.Include(p => p.Tags).FirstOrDefaultAsync(p => p.Id == post.Id);
 
                     newPost.Updated = DateTime.Now;
 
@@ -163,7 +163,7 @@ namespace RomanWrites.Controllers
                         newPost.ContentType = _imageService.ContentType(newImage);
                     }
 
-                    if ( post.Title != newPost.Title )
+                    if ( newPost.Title != post.Title )
                         newPost.Title = post.Title;
 
                     if ( newPost.Abstract != post.Abstract )
@@ -174,6 +174,18 @@ namespace RomanWrites.Controllers
 
                     if ( newPost.ProductionStatus != post.ProductionStatus )
                         newPost.ProductionStatus = post.ProductionStatus;
+
+                    _context.Tags.RemoveRange(newPost.Tags);
+
+                    foreach ( var tagText in tagValues )
+                    {
+                        _context.Add(new Tag()
+                        {
+                            PostId = post.Id,
+                            AuthorId = newPost.AuthorId,
+                            Text = tagText
+                        });
+                    }
 
                     await _context.SaveChangesAsync();
                 }
