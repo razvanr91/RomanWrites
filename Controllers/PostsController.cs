@@ -31,7 +31,7 @@ namespace RomanWrites.Controllers
         // GET: Posts
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Posts.Include(p => p.Author).Include(p => p.Blog).Include(p => p.Tags);
+            var applicationDbContext = _context.Posts.Include(p => p.Author).Include(p => p.Blog);
             return View(await applicationDbContext.ToListAsync());
         }
 

@@ -28,3 +28,7 @@ function DeleteTag() {
         index--;
     }
 }
+
+$("form").on("Submit", function () {
+    $("#TagValues option").prop("selected", "selected");
+})
