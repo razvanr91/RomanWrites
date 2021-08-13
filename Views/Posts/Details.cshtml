@@ -20,10 +20,10 @@
         <div class="col text-center fw-bold h3">Tags</div>
     </div>
     <div class="row">
-        <div class="col">
+        <div class="col text-center">
             @foreach(var tag in Model.Tags)
             {
-                <a asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+                <a class="btn btn-primary rounded-pill btn-sm" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
             }
         </div>
     </div>
