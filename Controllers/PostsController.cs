@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -17,12 +18,14 @@ namespace RomanWrites.Controllers
         private readonly ApplicationDbContext _context;
         private readonly ISlugService _slugService;
         private readonly IImageService _imageService;
+        private readonly UserManager<BlogUser> _userManager;
 
-        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService)
+        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService, UserManager<BlogUser> userManager)
         {
             _context = context;
             _slugService = slugService;
             _imageService = imageService;
+            _userManager = userManager;
         }
 
         // GET: Posts
@@ -35,7 +38,7 @@ namespace RomanWrites.Controllers
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
@@ -44,7 +47,7 @@ namespace RomanWrites.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.Blog)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+            if ( post == null )
             {
                 return NotFound();
             }
@@ -67,9 +70,12 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("BlogId,Title,Abstract,Content,Image,ProductionStatus")] Post post, List<string> tagValues)
         {
-            if (ModelState.IsValid)
+            if ( ModelState.IsValid )
             {
                 post.Created = DateTime.Now;
+
+                var authorId = _userManager.GetUserId(User);
+                post.AuthorId = authorId;
 
                 post.ImageData = await _imageService.EncodeImageAsync(post.Image);
                 post.ContentType = _imageService.ContentType(post.Image);
@@ -86,6 +92,20 @@ namespace RomanWrites.Controllers
 
                 _context.Add(post);
                 await _context.SaveChangesAsync();
+
+                foreach ( var tag in tagValues )
+                {
+                    _context.Add(new Tag()
+                    {
+                        PostId = post.Id,
+                        AuthorId = authorId,
+                        Text = tag
+
+                    });
+                }
+
+                await _context.SaveChangesAsync();
+
                 return RedirectToAction(nameof(Index));
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", post.AuthorId);
@@ -96,13 +116,13 @@ namespace RomanWrites.Controllers
         // GET: Posts/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
 
             var post = await _context.Posts.FindAsync(id);
-            if (post == null)
+            if ( post == null )
             {
                 return NotFound();
             }
@@ -118,12 +138,12 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("BlogId,Title,Abstract,Content,ProductionStatus")] Post post, IFormFile newImage)
         {
-            if (id != post.Id)
+            if ( id != post.Id )
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if ( ModelState.IsValid )
             {
                 try
                 {
@@ -131,7 +151,7 @@ namespace RomanWrites.Controllers
 
                     newPost.Updated = DateTime.Now;
 
-                    if(newImage is not null)
+                    if ( newImage is not null )
                     {
                         newPost.ImageData = await _imageService.EncodeImageAsync(newImage);
                         newPost.ContentType = _imageService.ContentType(newImage);
@@ -148,12 +168,12 @@ namespace RomanWrites.Controllers
 
                     if ( newPost.ProductionStatus != post.ProductionStatus )
                         newPost.ProductionStatus = post.ProductionStatus;
-                    
+
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch ( DbUpdateConcurrencyException )
                 {
-                    if (!PostExists(post.Id))
+                    if ( !PostExists(post.Id) )
                     {
                         return NotFound();
                     }
@@ -172,7 +192,7 @@ namespace RomanWrites.Controllers
         // GET: Posts/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
@@ -181,7 +201,7 @@ namespace RomanWrites.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.Blog)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (post == null)
+            if ( post == null )
             {
                 return NotFound();
             }
