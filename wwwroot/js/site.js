@@ -1,4 +1,17 @@
-﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
-// for details on configuring this project to bundle and minify static web assets.
+﻿let index = 0;
 
-// Write your JavaScript code.
+function AddTag() {
+    var tagEntry = document.getElementById("TagEntry").value;
+
+    let newOption = new Option(tagEntry, tagEntry);
+
+    document.getElementById("TagValues").options[index++] = newOption;
+
+    tagEntry = "";
+
+    return true;
+}
+
+function DeleteTag() {
+
+}
