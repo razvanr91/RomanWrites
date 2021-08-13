@@ -10,56 +10,85 @@
 <h4>Post</h4>
 <hr />
 <div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-
+    <div class="col">
+        <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Id" />
 
             <div class="form-group my-2">
                 <label asp-for="BlogId" class="control-label"></label>
-                <select asp-for="BlogId" class="form-control" asp-items="ViewBag.BlogId"></select>
-                <span asp-validation-for="BlogId" class="text-danger"></span>
+                <select asp-for="BlogId" class="form-control rounded-pill" asp-items="ViewBag.BlogId"></select>
             </div>
 
             <div class="form-group my-2">
                 <label asp-for="Title" class="control-label"></label>
-                <input asp-for="Title" class="form-control" />
+                <input asp-for="Title" class="form-control rounded-pill" />
                 <span asp-validation-for="Title" class="text-danger"></span>
             </div>
             <div class="form-group my-2">
                 <label asp-for="Abstract" class="control-label"></label>
-                <textarea asp-for="Abstract" class="form-control"></textarea>
+                <textarea asp-for="Abstract" class="form-control rounded"></textarea>
                 <span asp-validation-for="Abstract" class="text-danger"></span>
             </div>
             <div class="form-group my-2">
                 <label asp-for="Content" class="control-label"></label>
-                <textarea asp-for="Content" class="form-control" id="summernote"></textarea>
+                <textarea asp-for="Content" id="summernote" class="form-control rounded"></textarea>
                 <span asp-validation-for="Content" class="text-danger"></span>
             </div>
 
             <div class="form-group my-2">
                 <label asp-for="Image" class="control-label"></label>
-                <input name="NewImage" class="form-control" type="file" />
+                <input type="file" asp-for="Image" class="form-control rounded-pill" />
                 <span asp-validation-for="Image" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <div class="row">
+                    <div class="col">
+                        <label class="control-lagel">Manage Tags</label>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col">
+                        <div class="row w-75">
+                            <div class="col">
+                                <input type="text" class="form-control rounded-pill" id="TagEntry" />
+                            </div>
+                        </div>
+
+                        <div class="row w-75">
+                            <div class="col my-2">
+                                <button onclick="AddTag()" name="Add" type="button" class="btn btn-primary btn-sm w-100 rounded-pill">Add</button>
+                            </div>
+                            <div class="col d-flex justify-content-end my-2">
+                                <button onclick="DeleteTag()" name="Delete" type="button" class="btn btn-danger btn-sm w-100 rounded-pill">Delete</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col">
+                        <select class="w-100 rounded" name="TagValues" id="TagValues" multiple>
+                        </select>
+                    </div>
+                </div>
             </div>
 
             <div class="form-group my-2">
                 <label asp-for="ProductionStatus" class="control-label"></label>
-                <select asp-for="ProductionStatus" class="form-control" asp-items="Html.GetEnumSelectList<ProductionStatus>()">
-                    <option>Select option...</option>
+                <select asp-for="ProductionStatus" asp-items="@Html.GetEnumSelectList<ProductionStatus>()" class="form-control  rounded-pill">
+                    <option>Select an option</option>
                 </select>
                 <span asp-validation-for="ProductionStatus" class="text-danger"></span>
             </div>
 
             <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
+                <input type="submit" value="Save" class="btn btn-primary rounded-pill" />
             </div>
         </form>
     </div>
 </div>
 
-<div>
+<div class="my-2">
     <a asp-action="Index">Back to List</a>
 </div>
 
@@ -81,3 +110,5 @@
         });
     </script>
 }
+
+
