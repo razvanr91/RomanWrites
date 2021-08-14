@@ -64,7 +64,7 @@
                 @Html.DisplayFor(modelItem => item.Updated)
             </td>
             <td>
-                <img src="@ImageService.DecodeImage(item.ImageData, item.ContentType)" alt="@item.Title image" />
+                <img src="@ImageService.DecodeImage(item.ImageData, item.ContentType)" alt="@item.Title image" class="img-fluid" />
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.ProductionStatus)
