@@ -36,9 +36,9 @@ namespace RomanWrites.Controllers
         }
 
         // GET: Posts/Details/5
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Details(string slug)
         {
-            if ( id is null )
+            if ( string.IsNullOrEmpty(slug) )
             {
                 return NotFound();
             }
@@ -47,7 +47,7 @@ namespace RomanWrites.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.Blog)
                 .Include(p => p.Tags)
-                .FirstOrDefaultAsync(p => p.Id == id);
+                .FirstOrDefaultAsync(p => p.Slug == slug);
 
             if ( post == null )
             {
