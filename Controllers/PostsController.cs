@@ -83,9 +83,23 @@ namespace RomanWrites.Controllers
                 post.ContentType = _imageService.ContentType(post.Image);
 
                 var slug = _slugService.UrlFriendly(post.Title);
+
+                var badSlug = false;
+
                 if ( !_slugService.IsUnique(slug) )
                 {
+                    badSlug = true;
                     ModelState.AddModelError("Title", "The title you provided can not be used as it already exists.");
+                }
+
+                if ( string.IsNullOrEmpty(slug) )
+                {
+                    badSlug = true;
+                    ModelState.AddModelError("Title", "The title field is empty. Please add a title.");
+                }
+
+                if ( badSlug )
+                {
                     ViewData["TagValues"] = string.Join(",", tagValues);
                     return View(post);
                 }
