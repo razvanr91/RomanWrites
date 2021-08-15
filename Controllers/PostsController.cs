@@ -178,7 +178,22 @@ namespace RomanWrites.Controllers
                     }
 
                     if ( newPost.Title != post.Title )
-                        newPost.Title = post.Title;
+                    {
+                        //newPost.Title = post.Title;
+                        var newSlug = _slugService.UrlFriendly(newPost.Title);
+                        if(_slugService.IsUnique(newSlug))
+                        {
+                            newPost.Title = post.Title;
+                            newPost.Slug = newSlug;
+                        } else
+                        {
+                            ModelState.AddModelError("Title", "The title already exists. Please use a different title.");
+                            ViewData["TagValues"] = string.Join(",", tagValues);
+                            return View(post);
+                        }
+
+                    }
+                        
 
                     if ( newPost.Abstract != post.Abstract )
                         newPost.Abstract = post.Abstract;

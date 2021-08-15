@@ -1,8 +1,9 @@
-﻿let tagList = document.getElementById("TagValues");
-let index = tagList.length;
+﻿
 
 
 function AddTag() {
+    let tagList = document.getElementById("TagValues");
+    let index = tagList.length;
     var tagEntry = document.getElementById("TagEntry");
 
     let searchResult = search(tagEntry.value);
@@ -29,6 +30,8 @@ function AddTag() {
 }
 
 function DeleteTag() {
+    let tagList = document.getElementById("TagValues");
+    let index = tagList.length;
     let tagCount = 1;
 
     if (tagList.selectedIndex === -1) {
@@ -61,6 +64,7 @@ $("form").on("submit", function () {
 
 // Function to detect if the input is empty or the tag is a duplicate
 function search(str) {
+    let tagList = document.getElementById("TagValues");
     if (str == "") {
         return "You have not entered any text";
     }

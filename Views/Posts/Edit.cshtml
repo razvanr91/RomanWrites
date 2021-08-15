@@ -71,10 +71,18 @@
 
                     <div class="col">
                         <select class="w-100 rounded" name="TagValues" id="TagValues" multiple>
-                            @foreach ( var tag in tagList )
+                            @if ( tagList.Length != 0 )
                             {
-                                <option>@tag</option>
+                                @foreach ( string tag in tagList )
+                                {
+                                    @if ( !string.IsNullOrEmpty(tag) )
+                                    {
+                                        <option>@tag</option>
+                                    }
+
+                                }
                             }
+
                         </select>
                     </div>
                 </div>
