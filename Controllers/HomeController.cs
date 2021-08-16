@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
+using RomanWrites.Data;
 using RomanWrites.Models;
 using RomanWrites.Services;
 using RomanWrites.ViewModels;
@@ -15,6 +16,7 @@ namespace RomanWrites.Controllers
     {
         private readonly IBlogEmailSender _emailSender;
         private readonly ILogger<HomeController> _logger;
+        private readonly ApplicationDbContext _context;
 
         public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender)
         {
