@@ -32,8 +32,10 @@ namespace RomanWrites.Controllers
             var pageNumber = page ?? 1;
             var pageSize = 6;
 
-            var blogs = await _context.Blogs.Where(b => b.Posts.Any(p => p.ProductionStatus == Enums.ProductionStatus.PreviewReady))
-                        .OrderByDescending(b => b.Created).ToPagedListAsync(pageNumber, pageSize);
+            //var blogs = await _context.Blogs.Where(b => b.Posts.Any(p => p.ProductionStatus == Enums.ProductionStatus.PreviewReady))
+            //            .OrderByDescending(b => b.Created).ToPagedListAsync(pageNumber, pageSize);
+
+            var blogs = await _context.Blogs.Include(b => b.Author).OrderByDescending(b => b.Created).ToPagedListAsync(pageNumber, pageSize);
 
             return View(blogs);
         }
