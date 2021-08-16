@@ -12,13 +12,13 @@
         {
             <!-- Post preview-->
             <div class="post-preview">
-                <a asp-controller="Posts" asp-action="Details" asp-route-id="1">
+                <a asp-controller="Posts" asp-action="BlogPosts" asp-route-id="@blog.Id">
                     <h2 class="post-title">@blog.Name</h2>
                     <h3 class="post-subtitle">@blog.Description</h3>
                 </a>
                 <p class="post-meta">
                     Posted by
-                    <a href="#!">@blog.Author.FirstName</a>
+                    <a href="#!">@blog.Author.FirstName</a> on
                     @blog.Created
                 </p>
             </div>
