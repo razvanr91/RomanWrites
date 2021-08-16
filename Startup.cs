@@ -85,6 +85,11 @@ namespace RomanWrites
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllerRoute(
+                    name: "SlugRoute",
+                    pattern: "blogposts/urlfriendly/{slug}",
+                    defaults: new { controller = "Posts", action = "Details"});
+
+                endpoints.MapControllerRoute(
                     name: "default",
                     pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapRazorPages();
