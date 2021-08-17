@@ -48,6 +48,8 @@ namespace RomanWrites
             // Register Data Service Class
             services.AddScoped<DataService>();
 
+            services.AddScoped<BlogSearchService>();
+
             // Configure Mail Settings class
             services.Configure<MailSettings>(Configuration.GetSection("MailSettings"));
 
