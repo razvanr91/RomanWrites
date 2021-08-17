@@ -1,0 +1,55 @@
+﻿@using Microsoft.AspNetCore.Identity
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+@using RomanWrites.Services
+
+@inject UserManager<BlogUser> userManager
+@inject IImageService imageService
+@model IPagedList<Post>
+
+<div class="row">
+    @foreach ( var post in Model )
+    {
+
+        <div class="col-sm-2 col-lg-4 mt-3">
+            <div class="card border-primary">
+                <div class="card-body text-center">
+                    <div >
+                        <hr />
+                        <h5 class="card-title">@post.Title</h5>
+                        <hr />
+                    </div>
+                    <div>
+                        <p class="card-text">@post.Abstract</p>
+                    </div>
+
+                    <br />
+
+                    <div class="text-center">
+                        <a asp-action="Details" asp-controller="Posts" class="btn btn-primary btn-sm mb-2 rounded-pill">Details</a>
+                    </div>
+                </div>
+                <img src="@imageService.DecodeImage(post.ImageData, post.ContentType)" class="card-img-bottom" />
+            </div>
+        </div>
+    }
+</div>
+
+<div class="row">
+    <div class="col h3">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+</div>
+
+
+<div class="row">
+    <div class="col">
+        @Html.PagedListPager(Model, page => Url.Action("SearchIndex", new { page = page, searchTerm = ViewData["SearchTerm"]}),
+        new PagedListRenderOptions
+        {
+            LiElementClasses = new string[] { "page-item"},
+            PageClasses = new string[] { "page-link"}
+        })
+    </div>
+</div>
