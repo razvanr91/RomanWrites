@@ -40,16 +40,18 @@ namespace RomanWrites.Controllers
 
             var posts = _context.Posts.Where(p => p.ProductionStatus == ProductionStatus.ProductionReady).AsQueryable();
 
+            searchTerm = searchTerm.ToLower();
+
             if(searchTerm != null)
             {
-                posts = posts.Where(p => p.Title.Contains(searchTerm) ||
-                        p.Abstract.Contains(searchTerm) ||
-                        p.Content.Contains(searchTerm) ||
-                        p.Comments.Any(c => c.Body.Contains(searchTerm) ||
-                                            c.ModeratedBody.Contains(searchTerm) ||
-                                            c.Author.FirstName.Contains(searchTerm) ||
-                                            c.Author.LastName.Contains(searchTerm) ||
-                                            c.Author.Email.Contains(searchTerm)));
+                posts = posts.Where(p => p.Title.ToLower().Contains(searchTerm) ||
+                        p.Abstract.ToLower().Contains(searchTerm) ||
+                        p.Content.ToLower().Contains(searchTerm) ||
+                        p.Comments.Any(c => c.Body.ToLower().Contains(searchTerm) ||
+                                            c.ModeratedBody.ToLower().Contains(searchTerm) ||
+                                            c.Author.FirstName.ToLower().Contains(searchTerm) ||
+                                            c.Author.LastName.ToLower().Contains(searchTerm) ||
+                                            c.Author.Email.ToLower().Contains(searchTerm)));
             }
 
             posts = posts.OrderByDescending(p => p.Created);
