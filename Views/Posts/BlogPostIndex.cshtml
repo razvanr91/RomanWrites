@@ -1,0 +1,120 @@
+﻿@using RomanWrites.Services
+@using RomanWrites.Models
+@using X.PagedList
+@using X.PagedList.Mvc.Core
+@using X.PagedList.Web.Common
+
+@inject IImageService ImageService
+@model IPagedList<Post>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-action="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Title)*@
+                Title
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Abstract)*@
+                Abstract
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Content)*@
+                Content
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Created)*@
+                Created
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Updated)*@
+                Updated
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Image)*@
+                Image
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.ProductionStatus)*@
+                Production Status
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Blog)*@
+                Blog
+            </th>
+            <th>
+                @*@Html.DisplayNameFor(model => model.Author)*@
+                Author
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Title)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Abstract)
+                </td>
+                <td>
+                    @*@Html.DisplayFor(modelItem => item.Content)*@
+                    @Html.Raw(item.Content)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Created)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Updated)
+                </td>
+                <td>
+                    <img src="@ImageService.DecodeImage(item.ImageData, item.ContentType)" alt="@item.Title image" class="img-fluid" />
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ProductionStatus)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Blog.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Author.FirstName)
+                </td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
+                    <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+<hr />
+
+<div class="row">
+    <div class="col h3">
+        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+</div>
+
+<div class="row">
+    <div class="col">
+        @Html.PagedListPager(Model, page => Url.Action("BlogPost", new { id = Model.FirstOrDefault().BlogId, page = page }),
+                new PagedListRenderOptions
+                {
+                    LiElementClasses = new string[] { "page-item" },
+                    PageClasses = new string[] { "page-link" }
+                })
+    </div>
+</div>
