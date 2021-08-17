@@ -23,12 +23,13 @@ namespace RomanWrites.Controllers
         private readonly UserManager<BlogUser> _userManager;
         private readonly BlogSearchService _blogSearchService;
 
-        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService, UserManager<BlogUser> userManager)
+        public PostsController(ApplicationDbContext context, ISlugService slugService, IImageService imageService, UserManager<BlogUser> userManager, BlogSearchService blogSearchService)
         {
             _context = context;
             _slugService = slugService;
             _imageService = imageService;
             _userManager = userManager;
+            _blogSearchService = blogSearchService;
         }
 
         // Search Action
