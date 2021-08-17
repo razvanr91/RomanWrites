@@ -40,10 +40,11 @@ namespace RomanWrites.Controllers
 
             var posts = _context.Posts.Where(p => p.ProductionStatus == ProductionStatus.ProductionReady).AsQueryable();
 
-            searchTerm = searchTerm.ToLower();
 
             if ( searchTerm != null )
             {
+                searchTerm = searchTerm.ToLower();
+
                 posts = posts.Where(p => p.Title.ToLower().Contains(searchTerm) ||
                         p.Abstract.ToLower().Contains(searchTerm) ||
                         p.Content.ToLower().Contains(searchTerm) ||
