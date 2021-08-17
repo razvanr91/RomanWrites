@@ -10,6 +10,8 @@ using Microsoft.EntityFrameworkCore;
 using RomanWrites.Data;
 using RomanWrites.Models;
 using RomanWrites.Services;
+using RomanWrites.Enums;
+using X.PagedList;
 
 namespace RomanWrites.Controllers
 {
@@ -37,16 +39,21 @@ namespace RomanWrites.Controllers
 
         // GET: BlogPosts
 
-        public async Task<IActionResult> BlogPost(int? id)
+        public async Task<IActionResult> BlogPost(int? id, int? page)
         {
             if(id is null)
             {
                 return NotFound();
             }
 
-            var posts = await _context.Posts.Where(p => p.BlogId == id).ToListAsync();
+            var pageNumber = page ?? 1;
+            var pageSize = 6;
 
-            return View("Index", posts);
+            var posts = await _context.Posts.Where(p => p.BlogId == id && p.ProductionStatus == ProductionStatus.ProductionReady)
+                .OrderByDescending(p => p.Created)
+                .ToPagedListAsync(pageNumber, pageSize);
+
+            return View(posts);
                         
         }
 
