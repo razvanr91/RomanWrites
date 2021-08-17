@@ -42,7 +42,7 @@ namespace RomanWrites.Controllers
 
             searchTerm = searchTerm.ToLower();
 
-            if(searchTerm != null)
+            if ( searchTerm != null )
             {
                 posts = posts.Where(p => p.Title.ToLower().Contains(searchTerm) ||
                         p.Abstract.ToLower().Contains(searchTerm) ||
@@ -71,7 +71,7 @@ namespace RomanWrites.Controllers
 
         public async Task<IActionResult> BlogPost(int? id, int? page)
         {
-            if(id is null)
+            if ( id is null )
             {
                 return NotFound();
             }
@@ -84,7 +84,7 @@ namespace RomanWrites.Controllers
                 .ToPagedListAsync(pageNumber, pageSize);
 
             return View(posts);
-                        
+
         }
 
         // GET: Posts/Details/5
@@ -233,11 +233,12 @@ namespace RomanWrites.Controllers
                     {
                         //newPost.Title = post.Title;
                         var newSlug = _slugService.UrlFriendly(newPost.Title);
-                        if(_slugService.IsUnique(newSlug))
+                        if ( _slugService.IsUnique(newSlug) )
                         {
                             newPost.Title = post.Title;
                             newPost.Slug = newSlug;
-                        } else
+                        }
+                        else
                         {
                             ModelState.AddModelError("Title", "The title already exists. Please use a different title.");
                             ViewData["TagValues"] = string.Join(",", tagValues);
@@ -245,7 +246,7 @@ namespace RomanWrites.Controllers
                         }
 
                     }
-                        
+
 
                     if ( newPost.Abstract != post.Abstract )
                         newPost.Abstract = post.Abstract;
