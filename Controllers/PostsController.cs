@@ -85,6 +85,8 @@ namespace RomanWrites.Controllers
                 .Include(p => p.Author)
                 .Include(p => p.Blog)
                 .Include(p => p.Tags)
+                .Include(p => p.Comments)
+                //.ThenInclude(c => c.Author) if the comment author is not displayed or we get an Null Exception for the author
                 .FirstOrDefaultAsync(p => p.Slug == slug);
 
             if ( post == null )
