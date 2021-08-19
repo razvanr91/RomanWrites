@@ -53,3 +53,18 @@
 
 </div>
 
+<hr />
+
+<span class="btn btn-sm btn-primary rounded-pill">@Model.Comments.Count Comment(s)</span>
+
+@foreach(var comment in Model.Comments)
+{ 
+    <div class="card">
+        <div class="card-header">@comment.Author.FullName<br /> 
+            <small><i>Posted on @comment.Created</i></small>
+        </div>
+        <div class="card-body">
+            <div class="card-text">@comment.Body</div>
+        </div>
+    </div>
+}
