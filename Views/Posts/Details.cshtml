@@ -1,6 +1,8 @@
 @using RomanWrites.Models
-@using RomanWrites.Services  
+@using RomanWrites.Services
+@using Microsoft.AspNetCore.Identity
 @model Post
+@inject UserManager<BlogUser> userManager
 @inject IImageService imageService
 
 @{ ViewData["Title"] = "Details"; }
@@ -63,24 +65,59 @@
         @foreach ( var comment in Model.Comments )
         {
 
-            <div class="card my-3 rounded-pill">
-                <div class="row g-0">
+            <div class="card my-3 rounded-3">
+                <div class="row g-0  align-items-center">
                     <div class="col-md-2">
-                        <img class="img-fluid rounded-circle" src="@imageService.DecodeImage(comment.Author.ImageData, comment.Author.ContentType)"/>
+                        <img class="img-fluid rounded-circle" src="@imageService.DecodeImage(comment.Author.ImageData, comment.Author.ContentType)" />
                     </div>
                     <div class="col-md-10">
                         <div class="card-body">
                             <h5 class="card-title mb-0 lh-1">@comment.Author.FullName</h5>
                             <small class="text-muted fs-6"> Posted on @comment.Created</small>
                             <div class="card-text">@comment.Body</div>
+
+                            @if ( comment.Moderated is null && comment.Deleted is null && comment.AuthorId == userManager.GetUserId(User) )
+                            {
+                                <hr />
+                                <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-warning rounded-pill btn-sm float-end mb-2">Edit</button>
+                            }
+
                         </div>
                     </div>
                 </div>
             </div>
+
+            <div class="modal" id="editModal">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <h4 class="modal-title">Editing comment...</h4>
+                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                        </div>
+                        <div class="modal-body">
+                            <form asp-action="Edit" asp-controller="Comments">
+                                @Html.Hidden("Id", comment.Id)
+
+                                <div class="form-group">
+                                    <textarea class="form-control" name="Body" required>@comment.Body</textarea>
+                                </div>
+
+                                <button class="btn btn-sm btn-primary rounded-pill mt-2" type="submit">Submit</button>
+                            </form>
+                        </div>
+                        <div class="modal-footer">
+                            <button class="btn btn-sm btn-danger rounded-pill" data-bs-dismiss="modal">Close</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
         }
     </div>
 
 </article>
+
+
 
 
 
