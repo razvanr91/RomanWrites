@@ -75,7 +75,7 @@
                     </div>
                     <div class="col-md-10">
                         <div class="card-body">
-                            <h5 class="card-title mb-0 lh-1">@comment.Author.FullName</h5>
+                            <h5 class="card-title mb-0 lh-1" id="commentAuthor">@comment.Author.FullName</h5>
                             <small class="text-muted fs-6 small">
                                 <i>
                                     @if ( comment.Moderated is not null )
@@ -97,15 +97,15 @@
 
                             @if ( string.IsNullOrEmpty(comment.Body) )
                             {
-                                <div class="card-text">There is not text for this comment</div>
+                                <div class="card-text" id="commentBody">There is not text for this comment</div>
                             }
                             else if ( comment.ModeratedBody is not null )
                             {
-                                <div class="card-text">@comment.ModeratedBody</div>
+                                <div class="card-text" id="commentBody">@comment.ModeratedBody</div>
                             }
                             else if ( comment.Deleted is null )
                             {
-                                <div class="card-text">@comment.Body</div>
+                                <div class="card-text" id="commentBody">@comment.Body</div>
                             }
                             <hr />
                             @* Render Edit button *@
@@ -124,10 +124,11 @@
                                         <button class="btn-sm btn-warning fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="@($"#moderateModal{counter}")">Moderate</button>
                                     </div>
                                     <div class="col-2">
-                                        <form asp-action="Delete" asp-controller="Comments">
+                                        <button onclick="DeleteComment()" type="button" class="btn btn-sm btn-danger font-weight-bold rounded-pill" id="deleteButton">Delete</button>
+                                        <form asp-action="Delete" asp-controller="Comments" hidden>
                                             @Html.Hidden("Id", comment.Id)
                                             @Html.Hidden("Slug", comment.Post.Slug)
-                                            <button class="btn btn-sm btn-danger font-weight-bold rounded-pill">Delete</button>
+                                            <button class="btn btn-sm btn-danger font-weight-bold rounded-pill" id="confirmDeleteButton">Delete</button>
                                         </form>
                                     </div>
                                 </div>
