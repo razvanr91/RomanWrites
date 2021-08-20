@@ -32,7 +32,7 @@ namespace RomanWrites.Controllers
         // GET: Comments/Details/5
         public async Task<IActionResult> Details(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
@@ -42,7 +42,7 @@ namespace RomanWrites.Controllers
                 .Include(c => c.Moderator)
                 .Include(c => c.Post)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
+            if ( comment == null )
             {
                 return NotFound();
             }
@@ -66,7 +66,7 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
         {
-            if (ModelState.IsValid)
+            if ( ModelState.IsValid )
             {
                 comment.AuthorId = _userManager.GetUserId(User);
                 comment.Created = DateTime.Now;
@@ -85,13 +85,13 @@ namespace RomanWrites.Controllers
         // GET: Comments/Edit/5
         public async Task<IActionResult> Edit(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
 
             var comment = await _context.Comments.FindAsync(id);
-            if (comment == null)
+            if ( comment == null )
             {
                 return NotFound();
             }
@@ -108,12 +108,12 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, [Bind("Id,Body")] Comment comment)
         {
-            if (id != comment.Id)
+            if ( id != comment.Id )
             {
                 return NotFound();
             }
 
-            if (ModelState.IsValid)
+            if ( ModelState.IsValid )
             {
                 var newComment = await _context.Comments.Include(c => c.Post).FirstOrDefaultAsync(c => c.Id == comment.Id);
 
@@ -124,9 +124,9 @@ namespace RomanWrites.Controllers
 
                     await _context.SaveChangesAsync();
                 }
-                catch (DbUpdateConcurrencyException)
+                catch ( DbUpdateConcurrencyException )
                 {
-                    if (!CommentExists(comment.Id))
+                    if ( !CommentExists(comment.Id) )
                     {
                         return NotFound();
                     }
@@ -135,7 +135,7 @@ namespace RomanWrites.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction("Details", "Posts", new { slug = newComment.Post.Slug}, "commentSection");
+                return RedirectToAction("Details", "Posts", new { slug = newComment.Post.Slug }, "commentSection");
             }
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
@@ -147,12 +147,12 @@ namespace RomanWrites.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Moderate(int id, [Bind("Id,Body,ModeratedBody,ModerationType")] Comment comment)
         {
-            if(id != comment.Id)
+            if ( id != comment.Id )
             {
                 return NotFound();
             }
 
-            if(ModelState.IsValid)
+            if ( ModelState.IsValid )
             {
                 var newComment = await _context.Comments.Include(c => c.Post).FirstOrDefaultAsync(c => c.Id == comment.Id);
 
@@ -166,9 +166,9 @@ namespace RomanWrites.Controllers
 
                     await _context.SaveChangesAsync();
                 }
-                catch(DbUpdateConcurrencyException)
+                catch ( DbUpdateConcurrencyException )
                 {
-                    if(!CommentExists(comment.Id))
+                    if ( !CommentExists(comment.Id) )
                     {
                         return NotFound();
                     }
@@ -181,13 +181,13 @@ namespace RomanWrites.Controllers
                 return RedirectToAction("Details", "Posts", new { slug = newComment.Post.Slug }, "commentSection");
             }
 
-            return View(comment);
+            return RedirectToAction("Details", "Posts", new { slug = comment.Post.Slug}, "commentSection");
         }
 
         // GET: Comments/Delete/5
         public async Task<IActionResult> Delete(int? id)
         {
-            if (id == null)
+            if ( id == null )
             {
                 return NotFound();
             }
@@ -197,7 +197,7 @@ namespace RomanWrites.Controllers
                 .Include(c => c.Moderator)
                 .Include(c => c.Post)
                 .FirstOrDefaultAsync(m => m.Id == id);
-            if (comment == null)
+            if ( comment == null )
             {
                 return NotFound();
             }

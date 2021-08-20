@@ -76,25 +76,52 @@
                     <div class="col-md-10">
                         <div class="card-body">
                             <h5 class="card-title mb-0 lh-1">@comment.Author.FullName</h5>
-                            <small class="text-muted fs-6"> Posted on @comment.Created</small>
-                            <div class="card-text">@comment.Body</div>
+                            <small class="text-muted fs-6 small">
+                                <i>
+                                    @if ( comment.Moderated is not null )
+                                    {
+                                        <span class="small font-italic">Posted: @comment.Created</span>
+                                        <span class="small">
+                                            <span class="fw-bolder">
+                                                Moderated <span class="text-danger font-italic">(@comment.ModerationType.ToString().ToLower())</span>
+                                            </span>
+                                            : @comment.Moderated?.ToString()
+                                        </span>
+                                    }
+                                    else
+                                    {
+                                        <span class="small font-italic">Posted: @comment.Created</span>
+                                    }
+                                </i>
+                            </small>
 
+                            @if ( string.IsNullOrEmpty(comment.Body) )
+                            {
+                                <div class="card-text">There is not text for this comment</div>
+                            }
+                            else if ( comment.ModeratedBody is not null )
+                            {
+                                <div class="card-text">@comment.ModeratedBody</div>
+                            }
+                            else if ( comment.Deleted is null )
+                            {
+                                <div class="card-text">@comment.Body</div>
+                            }
+                            <hr />
                             @* Render Edit button *@
 
                             @if ( comment.Moderated is null && comment.Deleted is null && comment.AuthorId == userManager.GetUserId(User) )
                             {
-                                <hr />
                                 <button data-bs-toggle="modal" data-bs-target="#editModal" class="btn btn-warning rounded-pill btn-sm float-end mb-2">Edit</button>
                             }
 
                             @* Render Moderate And Delete Buttons *@
 
-                            @if ( User.IsInRole(BlogRole.Moderator.ToString()) && comment.Deleted is null )
+                            @if ( User.IsInRole(BlogRole.Moderator.ToString()) || User.IsInRole(BlogRole.Administrator.ToString()) && comment.Deleted is null )
                             {
-                                <hr />
                                 <div class="row">
                                     <div class="col-2">
-                                        <button class="btn-sm btn-warning font-weight-bold rounded-pill" data-bs-toggle="modal" data-bs-target="@($"#moderateModal{counter}")">Moderate</button>
+                                        <button class="btn-sm btn-warning fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="@($"#moderateModal{counter}")">Moderate</button>
                                     </div>
                                     <div class="col-2">
                                         <form asp-action="Delete" asp-controller="Comments">
