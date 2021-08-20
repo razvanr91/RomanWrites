@@ -64,22 +64,27 @@ namespace RomanWrites.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("PostId,Body")] Comment comment)
+        public async Task<IActionResult> Create([Bind("PostId,Post,Body")] Comment comment)
         {
             if ( ModelState.IsValid )
             {
+                var post = await _context.Posts.FirstAsync(p => p.Id == comment.PostId);
+
+                comment.Post = post;
                 comment.AuthorId = _userManager.GetUserId(User);
                 comment.Created = DateTime.Now;
 
                 _context.Add(comment);
                 await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
+
+                return RedirectToAction("Details", "Posts", new { slug = comment.Post.Slug }, "commentSection");
             }
+
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
 
-            return View(comment);
+            return RedirectToAction("Details", "Posts", new { slug = comment.Post.Slug}, "commentSection");
         }
 
         // GET: Comments/Edit/5
@@ -140,7 +145,9 @@ namespace RomanWrites.Controllers
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id", comment.AuthorId);
             ViewData["ModeratorId"] = new SelectList(_context.Users, "Id", "Id", comment.ModeratorId);
             ViewData["PostId"] = new SelectList(_context.Posts, "Id", "Abstract", comment.PostId);
-            return View(comment);
+
+            return RedirectToAction("Details", "Posts", new { slug = comment.Post.Slug }, "commentSection");
+
         }
 
         [HttpPost]
