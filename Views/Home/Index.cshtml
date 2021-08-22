@@ -55,7 +55,7 @@
                     <br />
 
                     <div class="text-center">
-                        <a class="btn btn-primary btn-sm mb-2 rounded-pill" asp-action="BlogPostIndex" asp-controller="Posts" asp-route-id="@blog.Id">Read Posts</a>
+                        <a class="btn btn-primary btn-sm mb-2 rounded-pill" asp-action="BlogPost" asp-controller="Posts" asp-route-id="@blog.Id">Read Posts</a>
                     </div>
 
                     @if ( User.IsInRole(BlogRole.Administrator.ToString()) )

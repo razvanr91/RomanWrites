@@ -1,9 +1,12 @@
 ﻿@using RomanWrites.Services
 @using RomanWrites.Models
+@using RomanWrites.Enums
+@using Microsoft.AspNetCore.Identity
 @using X.PagedList
 @using X.PagedList.Mvc.Core
 @using X.PagedList.Web.Common
 
+@inject UserManager<BlogUser> UserManager
 @inject IImageService ImageService
 @model IPagedList<Post>
 
@@ -11,94 +14,45 @@
     ViewData["Title"] = "Index";
 }
 
-<h1>Index</h1>
+<div class="row">
+    @foreach ( var post in Model )
+    {
+        //Check if logged in user is author of post
+        var isAuthor = false;
 
-<p>
-    <a asp-action="Create">Create New</a>
-</p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Title)*@
-                Title
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Abstract)*@
-                Abstract
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Content)*@
-                Content
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Created)*@
-                Created
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Updated)*@
-                Updated
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Image)*@
-                Image
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.ProductionStatus)*@
-                Production Status
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Blog)*@
-                Blog
-            </th>
-            <th>
-                @*@Html.DisplayNameFor(model => model.Author)*@
-                Author
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-        @foreach ( var item in Model )
+        if ( User.Identity.IsAuthenticated )
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Title)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Abstract)
-                </td>
-                <td>
-                    @*@Html.DisplayFor(modelItem => item.Content)*@
-                    @Html.Raw(item.Content)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Created)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Updated)
-                </td>
-                <td>
-                    <img src="@ImageService.DecodeImage(item.ImageData, item.ContentType)" alt="@item.Title image" class="img-fluid" />
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.ProductionStatus)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Blog.Description)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Author.FirstName)
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                    <a asp-action="Details" asp-route-slug="@item.Slug">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-                </td>
-            </tr>
+            isAuthor = ( post.AuthorId == UserManager.GetUserId(User) );
         }
-    </tbody>
-</table>
+
+        <div class="col-sm-6 col-lg-4">
+            <div class="card rounded">
+                <div class="card-body text-center">
+                    <hr class="card-hr" />
+                    <h5 class="card-title">@post.Title</h5>
+                    <hr class="card-hr" />
+
+                    <div>
+                        <p class="card-text">@post.Abstract</p>
+                    </div>
+
+                    <br />
+
+                    <div class="text-center mb-2">
+                        <a class="btn btn-primary btn-sm rounded-pill" asp-action="Details" asp-controller="Posts" asp-route-slug="@post.Slug">Read post</a>
+                        @if ( User.IsInRole(BlogRole.Administrator.ToString()) || isAuthor )
+                        {
+                            <a class="btn btn-warning btn-sm rounded-pill" asp-action="Edit" asp-controller="Posts" asp-route-id="@post.Id">Edit</a>
+                        }
+                    </div>
+
+                    <img src="@ImageService.DecodeImage(post.ImageData, post.ContentType)" class="card-img-bottom" />
+
+                </div>
+            </div>
+        </div>
+    }
+</div>
 
 <hr />
 
@@ -110,10 +64,10 @@
 
 <div class="row">
     <div class="col">
-        @Html.PagedListPager(Model, page => Url.Action("BlogPost", new { id = Model.FirstOrDefault().BlogId, page = page}),
+        @Html.PagedListPager(Model, page => Url.Action("BlogPost", new { id = Model.FirstOrDefault().BlogId, page = page }),
                 new PagedListRenderOptions
                 {
-                    LiElementClasses = new string[] {"page-item"},
+                    LiElementClasses = new string[] { "page-item" },
                     PageClasses = new string[] { "page-link" }
                 })
     </div>
