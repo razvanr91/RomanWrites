@@ -76,6 +76,8 @@ namespace RomanWrites.Controllers
         // GET: Posts/Details/5
         public async Task<IActionResult> Details(string slug)
         {
+            ViewData["Title"] = "Post Details Page";
+
             if ( string.IsNullOrEmpty(slug) )
             {
                 return NotFound();
@@ -86,7 +88,9 @@ namespace RomanWrites.Controllers
                 .Include(p => p.Blog)
                 .Include(p => p.Tags)
                 .Include(p => p.Comments)
-                //.ThenInclude(c => c.Author) if the comment author is not displayed or we get an Null Exception for the author
+                .ThenInclude(c => c.Author)
+                .Include(p => p.Comments)
+                .ThenInclude(c => c.Moderator)
                 .FirstOrDefaultAsync(p => p.Slug == slug);
 
             if ( post == null )
@@ -94,7 +98,13 @@ namespace RomanWrites.Controllers
                 return NotFound();
             }
 
-            return View(post);
+            var dataVM = new ViewModels.PostDetailsViewModel()
+            {
+                Post = post,
+                Tags = _context.Tags.Select(t => t.Text.ToLower()).Distinct().ToList()
+            };
+
+            return View(dataVM);
         }
 
         // GET: Posts/Create

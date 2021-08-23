@@ -2,8 +2,10 @@
 @using RomanWrites.Services
 @using Microsoft.AspNetCore.Identity
 @using RomanWrites.Enums
+@using RomanWrites.ViewModels
 
-@model Post
+@model PostDetailsViewModel
+
 @inject UserManager<BlogUser> userManager
 @inject IImageService imageService
 
@@ -12,7 +14,7 @@
 <article>
     <div class="row">
         <div class="col-9 border-right">
-            @Html.Raw(Model.Content)
+            @Html.Raw(Model.Post.Content)
         </div>
         <div class="col-3 text-center font-weight-bold h6">
             <div class="card">
@@ -22,7 +24,7 @@
                 <div>
                     @foreach ( var tag in Model.Tags )
                     {
-                        <a asp-action="TagIndex" asp-route-tag="@tag" class="mb-1 btn btn-sm btn-warning rounded-pill">@tag.Text</a>
+                        <a asp-action="TagIndex" asp-route-tag="@tag" class="mb-1 btn btn-sm btn-warning rounded-pill">#@tag</a>
                     }
                 </div>
             </div>
@@ -41,7 +43,7 @@
             <div class="col text-center">
                 @foreach ( var tag in Model.Tags )
                 {
-                    <a class="btn btn-primary rounded-pill btn-sm" asp-action="TagIndex" asp-route-tag="@tag.Text.ToLower()">#@tag.Text</a>
+                    <a class="btn btn-primary rounded-pill btn-sm" asp-action="TagIndex" asp-route-tag="@tag.ToLower()">#@tag.ToLower()</a>
                 }
             </div>
         </div>
@@ -51,7 +53,7 @@
         @if ( User.Identity.IsAuthenticated )
         {
             <form asp-action="Create" asp-controller="Comments" method="post">
-                @Html.Hidden("PostId", Model.Id)
+                @Html.Hidden("PostId", Model.Post.Id)
 
                 <div class="form-group">
                     <label class="control-label h2 font-weight-bold">Add Comment</label>
@@ -72,10 +74,10 @@
     <hr />
 
     <div class="col-md-10 col-lg-8 col-xl-7">
-        <span class="btn btn-sm btn-primary rounded-pill" id="commentSection">@Model.Comments.Count Comment(s)</span>
+        <span class="btn btn-sm btn-primary rounded-pill" id="commentSection">@Model.Post.Comments.Count Comment(s)</span>
 
         @{ var counter = 0; }
-        @foreach ( var comment in Model.Comments )
+        @foreach ( var comment in Model.Post.Comments )
         {
 
             <div class="card my-3 rounded-3">
