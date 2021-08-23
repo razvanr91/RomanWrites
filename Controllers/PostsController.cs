@@ -104,6 +104,10 @@ namespace RomanWrites.Controllers
                 Tags = _context.Tags.Select(t => t.Text.ToLower()).Distinct().ToList()
             };
 
+            ViewData["HeaderImage"] = _imageService.DecodeImage(post.ImageData, post.ContentType);
+            ViewData["MainText"] = post.Title;
+            ViewData["Subtext"] = post.Abstract;
+
             return View(dataVM);
         }
 
