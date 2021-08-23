@@ -14,7 +14,7 @@
     ViewData["Title"] = "Index";
 }
 
-<div class="row">
+<div class="row mb-2">
     @foreach ( var post in Model )
     {
         //Check if logged in user is author of post
@@ -51,6 +51,15 @@
                 </div>
             </div>
         </div>
+    }
+</div>
+
+<hr />
+
+<div class="row">
+    @if (User.IsInRole(BlogRole.Administrator.ToString()))
+    {
+        <a class="btn btn-primary rounded-pill" asp-action="Create" asp-controller="Posts">New Post</a>
     }
 </div>
 
