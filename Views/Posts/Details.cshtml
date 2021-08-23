@@ -50,14 +50,17 @@
     </div>
     <hr />
     <div class="col-md-10 col-lg-8 col-xl-7">
-        @if ( User.Identity.IsAuthenticated )
+        
+        <a class="btn btn-primary btn-sm rounded-pill my-2" asp-action="BlogPost" asp-controller="Posts" asp-route-id="@Model.Post.BlogId">Back to posts</a>
+        
+        @if (User.Identity.IsAuthenticated)
         {
             <form asp-action="Create" asp-controller="Comments" method="post">
                 @Html.Hidden("PostId", Model.Post.Id)
 
                 <div class="form-group">
                     <label class="control-label h2 font-weight-bold">Add Comment</label>
-                    <textarea name="body" class="form-control rounded" rows="3"></textarea>
+                    <textarea name="body" class="form-control rounded mb-2" rows="3"></textarea>
                 </div>
 
                 <button class="btn btn-sm btn-primary rounded-pill" type="submit">Add Comment</button>
@@ -67,7 +70,6 @@
         {
             <a class="btn btn-primary btn-sm rounded" asp-area="Identity" asp-page="/Account/Login">Login to add comments</a>
         }
-
 
     </div>
 
