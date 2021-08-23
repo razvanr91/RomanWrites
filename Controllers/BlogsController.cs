@@ -55,9 +55,14 @@ namespace RomanWrites.Controllers
 
         // GET: Blogs/Create
         [Authorize(Roles = "Administrator, Moderator")]
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            byte[] image = await _imageService.EncodeImageAsync("new-blog-bg.jpg");
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(image, "jpg");
+            ViewData["MainText"] = "New Blog";
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
+            
             return View();
         }
 

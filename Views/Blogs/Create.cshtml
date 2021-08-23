@@ -2,11 +2,15 @@
 
 @{
     ViewData["Title"] = "Create";
+    string link = @"https://unsplash.com/@andrewtneel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText";
 }
-
+<p class="text-end small mt-0 text-muted fs-6">
+    Photo by <a href="@link" class="text-decoration-none text-muted fst-italic" target="_blank">Andrew Neel</a> on 
+    <a class="text-decoration-none text-muted fst-italic" href="https://unsplash.com/s/photos/blog?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText" target="_blank">
+        Unsplash
+    </a>
+</p>
 <div class="row justify-content-center">
-    <h1>Create</h1>
-
     <h4 class="my-3">Blog</h4>
     <hr />
     <div class="row">
