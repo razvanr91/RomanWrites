@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using RomanWrites.Data;
@@ -8,6 +9,7 @@ using RomanWrites.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.IO;
 using System.Linq;
 using System.Threading.Tasks;
 using X.PagedList;
@@ -19,12 +21,14 @@ namespace RomanWrites.Controllers
         private readonly IBlogEmailSender _emailSender;
         private readonly ILogger<HomeController> _logger;
         private readonly ApplicationDbContext _context;
+        private readonly IImageService _imageService;
 
-        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context)
+        public HomeController(ILogger<HomeController> logger, IBlogEmailSender emailSender, ApplicationDbContext context, IImageService imageService)
         {
             _logger = logger;
             _emailSender = emailSender;
             _context = context;
+            _imageService = imageService;
         }
 
         public async Task<IActionResult> Index(int? page)
@@ -37,16 +41,31 @@ namespace RomanWrites.Controllers
 
             var blogs = await _context.Blogs.Include(b => b.Author).OrderByDescending(b => b.Created).ToPagedListAsync(pageNumber, pageSize);
 
+            byte[] imageData = await _imageService.EncodeImageAsync("home-bg.jpg");
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(imageData, "jpg");
+            ViewData["MainText"] = "Roman Writes";
+
             return View(blogs);
         }
 
-        public IActionResult About()
+        public async Task<IActionResult> About()
         {
+            byte[] imageData = await _imageService.EncodeImageAsync("about-bg.jpg");
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(imageData, "jpg");
+            ViewData["MainText"] = "About me";
+
             return View();
         }
 
-        public IActionResult Contact()
+        public async Task<IActionResult> Contact()
         {
+            byte[] imageData = await _imageService.EncodeImageAsync("contact-bg.jpg");
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(imageData, "jpg");
+            ViewData["MainText"] = "Get in touch";
+
             return View();
         }
 
