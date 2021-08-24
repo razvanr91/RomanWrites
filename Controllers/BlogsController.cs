@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using RomanWrites.ViewModels;
 using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
@@ -62,7 +63,10 @@ namespace RomanWrites.Controllers
             ViewData["HeaderImage"] = _imageService.DecodeImage(image, "jpg");
             ViewData["MainText"] = "New Blog";
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
-            
+            ViewData["ImageCreditLink"] =
+                @"https://unsplash.com/@andrewtneel?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText";
+            ViewData["ImageCreditAuthor"] = "Andrew Neel";
+
             return View();
         }
 

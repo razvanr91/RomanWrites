@@ -42,4 +42,7 @@
   <ItemGroup>
     <Folder Include="Enums\" />
   </ItemGroup>
+  <ItemGroup>
+    <Compile Remove="Controllers\PhotoCreditsControllers.cs" />
+  </ItemGroup>
 </Project>
