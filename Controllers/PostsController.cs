@@ -76,6 +76,8 @@ namespace RomanWrites.Controllers
             ViewData["HeaderImage"] = _imageService.DecodeImage(imageData, "jpg");
             ViewData["MainText"] = blog.Name;
             ViewData["Subtext"] = $"by {blog.Author.FullName}";
+            ViewData["ImageCreditLink"] = @"https://unsplash.com/@retrosupply?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText";
+            ViewData["ImageCreditAuthor"] = "RetroSupply";
 
             return View(posts);
 

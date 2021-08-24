@@ -14,6 +14,10 @@
     ViewData["Title"] = "Index";
 }
 
+<p class="text-end small mt-0 text-muted fs-6">
+    Photo by <a href="@ViewData["ImageCreditLink"]" class="text-decoration-none text-muted fst-italic" target="_blank">@ViewData["ImageCreditAuthor"]</a> on Unsplash
+</p>
+
 <div class="container w-75 my-3">
     <div class="row mb-2">
         @foreach ( var post in Model )
