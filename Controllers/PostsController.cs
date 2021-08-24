@@ -122,10 +122,18 @@ namespace RomanWrites.Controllers
         }
 
         // GET: Posts/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create()
         {
+            byte[] imageData = await _imageService.EncodeImageAsync("new-post-bg.jpg");
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(imageData, "jpg");
+            ViewData["MainText"] = "New post";
+            ViewData["ImageCreditLink"] = @"https://unsplash.com/@dariuszsankowski?utm_source=unsplash&utm_medium=referral&utm_content=creditCopyText";
+            ViewData["ImageCreditAuthor"] = "Dariusz Sankowski";
+            
             ViewData["AuthorId"] = new SelectList(_context.Users, "Id", "Id");
-            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Description");
+            ViewData["BlogId"] = new SelectList(_context.Blogs, "Id", "Name");
+            
             return View();
         }
 
