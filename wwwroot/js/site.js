@@ -2,15 +2,14 @@
     let confirmDelete = document.getElementById("confirmDeleteButton");
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {
-            confirmButton: 'btn btn-success rounded-pill',
-            cancelButton: 'btn btn-danger rounded-pill mx-2'
+            confirmButton: 'btn btn-success btn-sm rounded-pill',
+            cancelButton: 'btn btn-danger btn-sm rounded-pill mx-2'
         },
         buttonsStyling: false
     })
 
     swalWithBootstrapButtons.fire({
         title: 'Are you sure?',
-        text: "You won't be able to revert this!",
         icon: 'warning',
         showCancelButton: true,
         confirmButtonText: 'Yes, delete it!',
@@ -23,7 +22,8 @@
                 'The comment has been deleted.',
                 'success'
             )
-            confirmDelete.click();
+            setTimeout(() => {confirmDelete.click();}, 1000);
+            
         } else if (
             /* Read more about handling dismissals below */
             result.dismiss === Swal.DismissReason.cancel
