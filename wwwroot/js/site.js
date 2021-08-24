@@ -1,4 +1,45 @@
-﻿function DeleteComment() {
+﻿function DeleteBlog() {
+    let confirmButton = document.getElementById("ConfirmBlogDelete");
+
+    const swalWithBootstrapButtons = Swal.mixin({
+        customClass: {
+            confirmButton: 'btn btn-success btn-sm rounded-pill',
+            cancelButton: 'btn btn-danger btn-sm rounded-pill mx-2'
+        },
+        buttonsStyling: false
+    })
+
+    swalWithBootstrapButtons.fire({
+        title: 'Are you sure?',
+        icon: 'warning',
+        showCancelButton: true,
+        confirmButtonText: 'Yes, delete it!',
+        cancelButtonText: 'No, cancel!',
+        reverseButtons: true
+    }).then((result) => {
+        if (result.isConfirmed) {
+            swalWithBootstrapButtons.fire(
+                'Deleted!',
+                'The blog has been deleted.',
+                'success'
+            )
+            setTimeout(() => { confirmButton.click(); }, 1000);
+
+        } else if (
+            /* Read more about handling dismissals below */
+            result.dismiss === Swal.DismissReason.cancel
+        ) {
+            swalWithBootstrapButtons.fire(
+                'Cancelled',
+                'The comment is safe :)',
+                'error'
+            )
+        }
+    })
+    
+}
+
+function DeleteComment() {
     let confirmDelete = document.getElementById("confirmDeleteButton");
     const swalWithBootstrapButtons = Swal.mixin({
         customClass: {

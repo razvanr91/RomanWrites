@@ -141,8 +141,7 @@
                                                         <button class="btn-sm btn-warning fw-bold rounded-pill" data-bs-toggle="modal" data-bs-target="@($"#moderateModal{counter}")">Moderate</button>
                                                     </div>
                                                     <div class="col">
-                                                        <button onclick="DeleteComment()" type="button" class="btn btn-sm btn-danger font-weight-bold rounded-pill" id="deleteButton">Delete</button>
-                                                        <form asp-action="Delete" asp-controller="Comments" hidden>
+                                                        <form asp-action="Delete" asp-controller="Comments" >
                                                             @Html.Hidden("Id", comment.Id)
                                                             @Html.Hidden("Slug", comment.Post.Slug)
                                                             <button class="btn btn-sm btn-danger font-weight-bold rounded-pill" id="confirmDeleteButton">Delete</button>

@@ -21,6 +21,8 @@
     
         @foreach ( var blog in Model )
         {
+            var counter = 0;
+            
             <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
                 <div class="card mb-2">
                     <div class="h-75">
@@ -35,8 +37,9 @@
                             <hr class="card-hr" />
                         </div>
                         <div>
-                            <p class="card-text" data-toggle="tooltip" data-placement="top" title="" data-original-title="@blog.Description">
-                                @blog.Description
+                            <p class="card-text" data-toggle="tooltip" data-placement="top" title="" data-original-title="@Html.Raw(blog.Description.ToString())">
+                                @Html.Raw(blog.Description.ToString())
+                                @blog.Id
                             </p>
                         </div>
                         <br />
@@ -54,7 +57,15 @@
     
     
                                 <div class=" col text-center">
-                                    <a class="btn btn-sm btn-danger rounded-pill mb-2" asp-action="Edit" asp-controller="Blogs" asp-route-id="@blog.Id">Edit Blog</a>
+                                    <a class="btn btn-sm btn-warning rounded-pill mb-2" asp-action="Edit" asp-controller="Blogs" asp-route-id="@blog.Id">Edit Blog</a>
+                                </div>
+                                
+                                <div class="col text-center">
+
+                                    <form asp-action="Delete" asp-controller="Blogs" asp-route-id="@blog.Id">
+                                        @Html.Hidden("Id", @blog.Id)
+                                        <button type="submit" id="ConfirmBlogDelete" class="btn btn-sm btn-danger rounded-pill">Delete</button>
+                                    </form>
                                 </div>
                             </div>
                         }
