@@ -15,68 +15,73 @@
     ViewData["Title"] = "Home Page";
 
 }
-<div class="row gx-4 gx-lg-5 justify-content-center">
 
-    @foreach ( var blog in Model )
-    {
-        <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
-            <div class="card mb-2">
-                <div class="h-75">
-                    <img class="card-img-top img-fluid" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
-                </div>
-                
-                <div class="card-body text-center">
-
-                    <div>
-                        <hr class="card-hr" />
-                        <h5 class="card-title">@blog.Name</h5>
-                        <hr class="card-hr" />
+<div class="container w-75 my-3">
+    <div class="row gx-4 gx-lg-5 justify-content-center">
+    
+        @foreach ( var blog in Model )
+        {
+            <div class="col-sm-12 col-md-6 col-lg-4 mt-2">
+                <div class="card mb-2">
+                    <div class="h-75">
+                        <img class="card-img-top img-fluid" src="@_imageService.DecodeImage(blog.ImageData, blog.ContentType)" />
                     </div>
-                    <div>
-                        <p class="card-text" data-toggle="tooltip" data-placement="top" title="" data-original-title="@blog.Description">
-                            @blog.Description
-                        </p>
-                    </div>
-                    <br />
-
-                    <div class="text-center">
-                        <a class="btn btn-primary btn-sm mb-2 rounded-pill" asp-action="BlogPost" asp-controller="Posts" asp-route-id="@blog.Id">Read Posts</a>
-                    </div>
-
-                    @if ( User.IsInRole(BlogRole.Administrator.ToString()) )
-                    {
-                        <div class="row">
-                            <div class="col text-center">
-                                <a class="btn btn-sm btn-warning rounded-pill mb-2" asp-action="Create" asp-controller="Posts" asp-route-id="@blog.Id">Create Post</a>
-                            </div>
-
-
-                            <div class=" col text-center">
-                                <a class="btn btn-sm btn-danger rounded-pill mb-2" asp-action="Edit" asp-controller="Blogs" asp-route-id="@blog.Id">Edit Blog</a>
-                            </div>
+                    
+                    <div class="card-body text-center">
+    
+                        <div>
+                            <hr class="card-hr" />
+                            <h5 class="card-title">@blog.Name</h5>
+                            <hr class="card-hr" />
                         </div>
-                    }
-
+                        <div>
+                            <p class="card-text" data-toggle="tooltip" data-placement="top" title="" data-original-title="@blog.Description">
+                                @blog.Description
+                            </p>
+                        </div>
+                        <br />
+    
+                        <div class="text-center">
+                            <a class="btn btn-primary btn-sm mb-2 rounded-pill" asp-action="BlogPost" asp-controller="Posts" asp-route-id="@blog.Id">Read Posts</a>
+                        </div>
+    
+                        @if ( User.IsInRole(BlogRole.Administrator.ToString()) )
+                        {
+                            <div class="row">
+                                <div class="col text-center">
+                                    <a class="btn btn-sm btn-warning rounded-pill mb-2" asp-action="Create" asp-controller="Posts" asp-route-id="@blog.Id">Create Post</a>
+                                </div>
+    
+    
+                                <div class=" col text-center">
+                                    <a class="btn btn-sm btn-danger rounded-pill mb-2" asp-action="Edit" asp-controller="Blogs" asp-route-id="@blog.Id">Edit Blog</a>
+                                </div>
+                            </div>
+                        }
+    
+                    </div>
                 </div>
             </div>
+        }
+    </div>
+    
+    <!-- Add page controlls here -->
+    <div class="row">
+        <div class="col h3">
+            Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
         </div>
-    }
-</div>
-
-<!-- Add page controlls here -->
-<div class="row">
-    <div class="col h3">
-        Page @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) of @Model.PageCount
+    </div>
+    
+    <div class="row">
+        <div class="col">
+            @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
+                new PagedListRenderOptions
+                {
+                    LiElementClasses = new string[] { "page-item" },
+                    PageClasses = new string[] { "page-link" }
+                })
+        </div>
     </div>
 </div>
 
-<div class="row">
-    <div class="col">
-        @Html.PagedListPager(Model, page => Url.Action("Index", new { page = page }),
-            new PagedListRenderOptions
-            {
-                LiElementClasses = new string[] { "page-item" },
-                PageClasses = new string[] { "page-link" }
-            })
-    </div>
-</div>
+
