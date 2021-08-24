@@ -62,12 +62,20 @@ namespace RomanWrites.Controllers
                 return NotFound();
             }
 
+            var blog = _context.Blogs.Include(b => b.Author).FirstOrDefaultAsync(b => b.Id == id).Result;
+
             var pageNumber = page ?? 1;
             var pageSize = 6;
 
             var posts = await _context.Posts.Where(p => p.BlogId == id && p.ProductionStatus == ProductionStatus.ProductionReady)
                 .OrderByDescending(p => p.Created)
                 .ToPagedListAsync(pageNumber, pageSize);
+
+            byte[] imageData = await _imageService.EncodeImageAsync("blogs-bg.jpg");
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(imageData, "jpg");
+            ViewData["MainText"] = blog.Name;
+            ViewData["Subtext"] = $"by {blog.Author.FullName}";
 
             return View(posts);
 
