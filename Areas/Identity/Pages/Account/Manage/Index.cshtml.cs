@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore.Metadata.Internal;
 using RomanWrites.Models;
 using RomanWrites.Services;
 
@@ -58,6 +59,13 @@ namespace RomanWrites.Areas.Identity.Pages.Account.Manage
             {
                 PhoneNumber = phoneNumber
             };
+
+            byte[] imageData = await _imageService.EncodeImageAsync("post-bg.jpg");
+
+            ViewData["HeaderImage"] = _imageService.DecodeImage(imageData, "jpg");
+            ViewData["MainText"] = $"Welcome {user.FirstName}";
+            ViewData["Subtext"] = "Here are your details";
+
         }
 
         public async Task<IActionResult> OnGetAsync()
